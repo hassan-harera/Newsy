@@ -3,6 +3,8 @@ package Controller;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.harera.parsewebsitedata.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.logging.LogRecord;
 
 
 public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerViewAdapter.ViewHolder> {
@@ -25,9 +28,15 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     Context context;
     List<News> list;
 
+
+
     public NewsRecyclerViewAdapter(Context context, List<News> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public void update(News news){
+        list.add(news);
     }
 
     @NonNull

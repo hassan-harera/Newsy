@@ -22,6 +22,7 @@ import java.util.List;
 
 import Controller.Masrawy;
 import Controller.NewsRecyclerViewAdapter;
+import Controller.SkyNews;
 import Controller.Youm7;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private Youm7 youm7;
     private Masrawy masrawy;
+    private SkyNews skyNews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
         adapter = new NewsRecyclerViewAdapter(this, news);
         rec_view.setAdapter(adapter);
 
-        youm7 = new Youm7(news, adapter);
-        youm7.execute();
-
-        masrawy = new Masrawy(news, adapter);
-        masrawy.execute();
+        getMasrawyNews();
+        getYoum7News();
+        getSkyNews();
 
 
         Runnable runnable = new Runnable() {
@@ -63,6 +63,21 @@ public class MainActivity extends AppCompatActivity {
         };
         handler = new Handler();
         handler.postDelayed(runnable, 1000);
+    }
+
+    private void getSkyNews() {
+        skyNews = new SkyNews(adapter);
+        skyNews.execute();
+    }
+
+    private void getYoum7News() {
+        youm7 = new Youm7(adapter);
+        youm7.execute();
+    }
+
+    private void getMasrawyNews() {
+        masrawy = new Masrawy(adapter);
+        masrawy.execute();
     }
 
     @Override
@@ -78,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!rec_view.canScrollVertically(View.SCROLL_AXIS_VERTICAL)) {
                             masrawy.getMores();
                             youm7.getMores();
+                            skyNews.getMores();
                         }
                     }
                 });

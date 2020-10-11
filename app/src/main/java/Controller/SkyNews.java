@@ -12,27 +12,27 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.List;
 
-public class Masrawy extends AsyncTask<Void, Void, Void> {
+public class SkyNews extends AsyncTask<Void, Void, Void> {
 
 
     private NewsRecyclerViewAdapter adapter;
     private Elements elements;
     private Document document;
 
-    public Masrawy(NewsRecyclerViewAdapter adapter) {
+    public SkyNews( NewsRecyclerViewAdapter adapter) {
         this.adapter = adapter;
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = "https://www.masrawy.com/Today#Nav-Today";
+        String url = "https://news.sky.com/";
         try {
             document = Jsoup.connect(url).get();
-            elements = document.select("li[class=mix news]");
+            elements = document.select("div[class=sdc-site-tiles__item sdc-site-tile sdc-site-tile--has-link]");
             for (Element element : elements) {
-                String imgUrl = element.select("img[class=lazy]").attr("data-src");
-                String newsUrl = "https://www.masrawy.com/" + element.select("a[class=item]").attr("href");
-                String title = element.select("img[class=lazy]").attr("alt");
+                String imgUrl = element.select("img[class=sdc-site-tile__image]").attr("src");
+                String newsUrl = "https://news.sky.com/" + element.select("a[class=sdc-site-tile__headline-link]").attr("href");
+                String title = element.select("span[class=sdc-site-tile__headline-text]").text();
 
                 adapter.update(new News(imgUrl, title, newsUrl));
             }
@@ -50,14 +50,11 @@ public class Masrawy extends AsyncTask<Void, Void, Void> {
 
         elements = elements.next();
         for (Element element : elements) {
-            String imgUrl = element.select("img[class=lazy]").attr("data-src");
-            String newsUrl = "https://www.masrawy.com/" + element.select("a[class=item]").attr("href");
-            String title = element.select("img[class=lazy]").attr("alt");
+            String imgUrl = element.select("img[class=sdc-site-tile__image]").attr("src");
+            String newsUrl = "https://news.sky.com/" + element.select("a[class=sdc-site-tile__headline-link]").attr("href");
+            String title = element.select("span[class=sdc-site-tile__headline-text]").text();
 
             adapter.update(new News(imgUrl, title, newsUrl));
         }
-
-
     }
-
 }
