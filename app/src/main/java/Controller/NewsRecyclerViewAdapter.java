@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.harera.parsewebsitedata.News;
+import com.harera.parsewebsitedata.NewsView;
 import com.harera.parsewebsitedata.R;
 import com.squareup.picasso.Picasso;
 
@@ -29,13 +30,12 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
     List<News> list;
 
 
-
     public NewsRecyclerViewAdapter(Context context, List<News> list) {
         this.context = context;
         this.list = list;
     }
 
-    public void update(News news){
+    public void update(News news) {
         list.add(news);
     }
 
@@ -55,14 +55,14 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
             holder.linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(list.get(position).getNewsUrl()));
+                    Intent intent = new Intent(context, NewsView.class);
+                    intent.putExtra("URL", list.get(position).getNewsUrl());
                     context.startActivity(intent);
                 }
             });
 
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
