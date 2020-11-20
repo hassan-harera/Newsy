@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center|top"
+    android:layout_margin="4sp"
+    android:background="#14838080"
+    android:gravity="center"
     android:orientation="vertical"
-    android:id="@+id/ll"
-    android:gravity="center">
+    android:padding="4sp">
+
 
     <TextView
         android:id="@+id/news_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5sp"
-        android:textSize="14sp"
         android:textColor="#000"
-
+        android:textSize="14sp"
         android:textStyle="bold" />
 
 
     <ImageView
         android:id="@+id/news_img"
         android:layout_width="match_parent"
-        android:padding="5sp"
         android:layout_height="150sp"
+        android:padding="5sp"
         android:scaleType="fitEnd" />
-
-
 </LinearLayout>
