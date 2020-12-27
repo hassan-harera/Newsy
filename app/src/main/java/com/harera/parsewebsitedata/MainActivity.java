@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
     private Youm7 youm7;
     private Masrawy masrawy;
     private SkyNews skyNews;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        refreshLayout = findViewById(R.id.refresh);
 
         rec_view = findViewById(R.id.rec_view);
         rec_view.setHasFixedSize(true);
@@ -52,17 +56,31 @@ public class MainActivity extends AppCompatActivity {
         getMasrawyNews();
         getYoum7News();
         getSkyNews();
-
+        setRefreshListener();
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 adapter.notifyDataSetChanged();
                 MainActivity.this.handler.postDelayed(this, 1000);
+                refreshLayout.setRefreshing(false);
             }
         };
         handler = new Handler();
         handler.postDelayed(runnable, 1000);
+    }
+
+    private void setRefreshListener() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                news.clear();
+                adapter.notifyDataSetChanged();
+                getMasrawyNews();
+                getYoum7News();
+                getSkyNews();
+            }
+        });
     }
 
     private void getSkyNews() {
@@ -90,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 rec_view.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                     @Override
                     public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                        if (!rec_view.canScrollVertically(View.SCROLL_AXIS_VERTICAL)) {
+                        if (!news.isEmpty() && !rec_view.canScrollVertically(View.SCROLL_AXIS_VERTICAL)) {
                             masrawy.getMores();
                             youm7.getMores();
                             skyNews.getMores();
@@ -99,7 +117,5 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }, 3000);
-
-
     }
 }
